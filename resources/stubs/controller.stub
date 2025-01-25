@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{modelName}};
+use Illuminate\Http\Request;
+use App\Http\Resources\{{modelName}}Resource;
+
+class {{modelName}}Controller extends Controller
+{
+    public function index()
+    {
+        ${{modelVariable}}s = {{modelName}}::latest()->paginate(10);
+        return response()->json([
+            'data' => {{modelName}}Resource::collection(${{modelVariable}}s),
+            'message' => '{{modelName}} retrieved successfully'
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            {{validationRules}}
+        ]);
+
+        ${{modelVariable}} = {{modelName}}::create($request->all());
+        return response()->json([
+            'data' => new {{modelName}}Resource(${{modelVariable}}),
+            'message' => '{{modelName}} created successfully'
+        ], 201);
+    }
+
+    public function show({{modelName}} ${{modelVariable}})
+    {
+        return response()->json([
+            'data' => new {{modelName}}Resource(${{modelVariable}}),
+            'message' => '{{modelName}} retrieved successfully'
+        ]);
+    }
+
+    public function update(Request $request, {{modelName}} ${{modelVariable}})
+    {
+        $request->validate([
+            {{validationRules}}
+        ]);
+
+        ${{modelVariable}}->update($request->all());
+        return response()->json([
+            'data' => new {{modelName}}Resource(${{modelVariable}}),
+            'message' => '{{modelName}} updated successfully'
+        ]);
+    }
+
+    public function destroy({{modelName}} ${{modelVariable}})
+    {
+        ${{modelVariable}}->delete();
+        return response()->json([
+            'message' => '{{modelName}} deleted successfully'
+        ]);
+    }
+}
